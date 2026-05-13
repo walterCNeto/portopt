@@ -46,7 +46,7 @@ jobs:
           # Base path for GitHub Pages — repo name in URL
           VITE_BASE: /portopt/
           # Production API URL on Fly.io
-          VITE_API_BASE: https://portopt-api.fly.dev
+          VITE_API_BASE: https://portopt-wcn.fly.dev
 
       - name: Configure Pages
         uses: actions/configure-pages@v4

@@ -74,4 +74,4 @@ jobs:
         working-directory: frontend
         run: npm run build
         env:
-          VITE_API_BASE: https://portopt-api.fly.dev
+          VITE_API_BASE: https://portopt-wcn.fly.dev

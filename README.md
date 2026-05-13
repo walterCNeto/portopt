@@ -8,7 +8,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
 🌐 **Live:** https://waltercneto.github.io/portopt/
-📚 **API docs:** https://portopt-api.fly.dev/docs
+📚 **API docs:** https://portopt-wcn.fly.dev/docs
 
 `portopt` é uma biblioteca Python + REST API + frontend React que implementa **16 modelos de otimização de portfólios** organizados em 5 tiers de complexidade — do equal-weight ingênuo (1/N) ao Hierarchical Risk Parity de López de Prado, passando por Markowitz, MAD, CVaR, ERC, Risk Budgeting e Black-Litterman.
 

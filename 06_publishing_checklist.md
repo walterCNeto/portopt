@@ -3,7 +3,7 @@
 Este guia te leva do estado atual (`portopt_fase1.zip` extraído localmente) até o produto público em:
 
 - **Frontend:** https://waltercneto.github.io/portopt/
-- **API:** https://portopt-api.fly.dev/
+- **API:** https://portopt-wcn.fly.dev/
 
 Tempo total estimado: **40-60 minutos** numa primeira execução.
 
@@ -67,7 +67,7 @@ URL final: `https://waltercneto.github.io/portopt/`
 fly auth login
 
 # Criar a app SEM deploy ainda
-fly launch --name portopt-api --region gru --no-deploy
+fly launch --name portopt-wcn --region gru --no-deploy
 # (Se perguntar para sobrescrever o fly.toml, responda NÃO — o nosso é melhor.)
 
 # Configurar o CORS para apontar para o GH Pages
@@ -83,7 +83,7 @@ fly deploy
 Aguardar ~5 minutos no primeiro build. Verificar:
 
 ```bash
-curl https://portopt-api.fly.dev/health
+curl https://portopt-wcn.fly.dev/health
 # → {"status":"ok","version":"0.1.0","environment":"production","n_models":16,"n_datasets":3}
 ```
 
@@ -142,7 +142,7 @@ Adicionar Plausible (open-source, GDPR-friendly) ou similar no `index.html`. Evi
 Health check público em `/health` já existe. Pode adicionar badge no README:
 
 ```markdown
-[![API Status](https://img.shields.io/website?url=https%3A%2F%2Fportopt-api.fly.dev%2Fhealth)](https://portopt-api.fly.dev/health)
+[![API Status](https://img.shields.io/website?url=https%3A%2F%2Fportopt-wcn.fly.dev%2Fhealth)](https://portopt-wcn.fly.dev/health)
 ```
 
 ## 7. Divulgação inicial
@@ -176,7 +176,7 @@ GitHub Pages não suporta client-side routing puro. Solução: adicionar `fronte
 Verificar:
 1. `PORTOPT_CORS` está setado no Fly.io
 2. `VITE_API_BASE` no workflow aponta corretamente
-3. Não tem barra extra (e.g. `https://portopt-api.fly.dev/` vs sem barra)
+3. Não tem barra extra (e.g. `https://portopt-wcn.fly.dev/` vs sem barra)
 
 ## Recursos
 
