@@ -1,0 +1,45 @@
+# Fly.io configuration for the portopt API.
+# Region gru (São Paulo) — same pattern as chassiro-api.
+#
+# To deploy from scratch:
+#   fly launch --name portopt-api --region gru --no-deploy
+#   fly secrets set PORTOPT_CORS="https://waltercneto.github.io"
+#   fly deploy
+
+app = "portopt-api"
+primary_region = "gru"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORTOPT_ENV = "production"
+  # CORS_ORIGINS will be set via `fly secrets set PORTOPT_CORS=...`
+  # Default below is for local dev only
+  PORTOPT_CORS = "https://waltercneto.github.io,http://localhost:5173"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0   # cost saver: idle scales to zero
+  processes = ["app"]
+
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 50
+    soft_limit = 25
+
+# Health check — Fly will use this for routing decisions
+[[http_service.checks]]
+  interval = "30s"
+  timeout = "5s"
+  grace_period = "10s"
+  method = "GET"
+  path = "/health"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  cpus = 1

@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+venv/
+.venv/
+videoenv/
+ENV/
+env/
+
+# Node / Frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+*.log
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Local dev
+.env
+.env.local
+*.local
+
+# Outputs e datasets de trabalho
+outputs/
+local_data/
+*.parquet.tmp
+
+# Logs uvicorn / Fly.io
+/tmp/uvicorn.log
+.fly/
+
+# Documentos transitórios do trabalho de pesquisa
+nb*.txt
+extract_nb.py

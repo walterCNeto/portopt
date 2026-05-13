@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "portopt"
+version = "0.1.0"
+description = "Portfolio Optimization Toolkit (WCN Softwares) — baseado no curso do Prof. Guido Chagas (2024)"
+readme = "README.md"
+authors = [{name = "Walter C. Neto", email = "contato@vouchamarosindico.com.br"}]
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "pandas>=2.1",
+    "pyarrow>=14",
+    "scikit-learn>=1.3",
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+    "yfinance>=0.2.40",
+    "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+convex = ["cvxpy>=1.4"]
+riskfolio = ["riskfolio-lib>=6.0"]
+api = ["fastapi>=0.110", "uvicorn[standard]>=0.27", "pydantic>=2.6", "redis>=5.0"]
+brasil = ["python-bcb>=0.3"]
+excel_legacy = ["xlrd>=2.0"]
+dev = ["pytest>=8.0", "pytest-cov>=4.1", "hypothesis>=6.99", "ruff>=0.3", "mypy>=1.9"]
+all = ["portopt[convex,riskfolio,api,brasil,excel_legacy,dev]"]
+
+[project.scripts]
+portopt = "portopt.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["portopt*"]
+
+[tool.setuptools.package-data]
+portopt = ["data_files/chagas_2024/*.xlsx", "data_files/chagas_2024/*.xls"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --strict-markers"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
