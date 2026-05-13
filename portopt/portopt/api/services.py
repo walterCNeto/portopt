@@ -18,6 +18,9 @@ import numpy as np
 import pandas as pd
 
 import portopt as po
+from portopt import data as _po_data
+from portopt import returns as _po_returns
+from portopt.models import BlackLitterman as _BlackLitterman
 from portopt import datasets as ds
 from portopt.api import schemas as S
 from portopt.api.pedagogy import get_pedagogy
@@ -68,14 +71,14 @@ def load_prices_from_spec(spec: S.DataSpec) -> pd.DataFrame:
         return prices
 
     if spec.source == "yfinance":
-        return po.data.load_prices(
+        return _po_data.load_prices(
             spec.tickers, start=spec.start.isoformat(),
             end=spec.end.isoformat() if spec.end else None,
             source="yfinance",
         )
 
     if spec.source == "bacen":
-        return po.data.load_prices(
+        return _po_data.load_prices(
             spec.tickers, start=spec.start.isoformat(),
             end=spec.end.isoformat() if spec.end else None,
             source="bacen",
@@ -85,15 +88,15 @@ def load_prices_from_spec(spec: S.DataSpec) -> pd.DataFrame:
 
 
 def to_log_returns(prices: pd.DataFrame, freq: str = "1D") -> pd.DataFrame:
-    log_d = po.returns.to_log_returns(prices)
+    log_d = _po_returns.to_log_returns(prices)
     if freq == "1D":
         return log_d
     if freq == "5D":
         return log_d.iloc[::5]
     if freq == "ME":
-        return po.returns.resample_log_returns(log_d, "ME")
+        return _po_returns.resample_log_returns(log_d, "ME")
     if freq == "QE":
-        return po.returns.resample_log_returns(log_d, "QE")
+        return _po_returns.resample_log_returns(log_d, "QE")
     raise ValueError(f"Unknown frequency: {freq}")
 
 
@@ -209,7 +212,7 @@ def build_black_litterman(
                 P[k, asset_names.index(asset)] = weight
         Q[k] = view.expected
 
-    return po.models.BlackLitterman(
+    return _BlackLitterman(
         market_weights=omega_M,
         delta=bl_spec.delta,
         P=P,
