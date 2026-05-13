@@ -36,6 +36,7 @@ from portopt.costs import (
 )
 from portopt.models import MODEL_REGISTRY, get_model
 from portopt.models.base import ConstraintSet
+from portopt.backtest import BacktestConfig as _BacktestConfig, BacktestEngine as _BacktestEngine
 
 
 # ===========================================================================
@@ -311,7 +312,7 @@ def run_backtest(req: S.BacktestRequest, downsample_to: int = 800) -> S.Backtest
     else:
         model = model_result
 
-    cfg = po.BacktestConfig(
+    cfg = _BacktestConfig(
         training_window=req.config.training_window,
         rebalance=req.config.rebalance,
         transaction_costs=build_cost(req.config.cost),
@@ -319,7 +320,7 @@ def run_backtest(req: S.BacktestRequest, downsample_to: int = 800) -> S.Backtest
         progress=False,
     )
 
-    engine = po.BacktestEngine(cfg)
+    engine = _BacktestEngine(cfg)
     bt = engine.run(prices, model, constraints, log_returns=log_rets)
 
     # Downsample for transfer (>800 points becomes unwieldy on the wire)
