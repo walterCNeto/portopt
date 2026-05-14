@@ -1,4 +1,4 @@
-"""Optimization models, organized by tier of complexity.
+﻿"""Optimization models, organized by tier of complexity.
 
 The `MODEL_REGISTRY` maps short string names to model classes, used by:
 - CLI (`portopt optimize --model hrp`)
@@ -52,6 +52,7 @@ MODEL_REGISTRY: dict[str, type[OptimizationModel]] = {
     "mv": Markowitz,
     "min_var": MinimumVariance,
     "mvp": MinimumVariance,
+    "min_variance": MinimumVariance,
     "max_sharpe": MaximumSharpe,
     "tangency": MaximumSharpe,
     "utility": QuadraticUtility,
@@ -118,3 +119,4 @@ __all__ = [
     # Tier 4
     "BlackLitterman",
 ]
+

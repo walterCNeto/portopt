@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Typed client for the portopt FastAPI backend.
  *
  * The shape of the types mirrors `portopt/api/schemas.py` (Pydantic).
@@ -171,7 +171,7 @@ const BASE = (import.meta.env.VITE_API_BASE as string | undefined) || "";
 
 export const api = axios.create({
   baseURL: BASE,
-  timeout: 60_000,
+  timeout: 600_000,
 });
 
 // ---------- Endpoints ----------
@@ -225,3 +225,4 @@ export const portoptAPI = {
     return data;
   },
 };
+
