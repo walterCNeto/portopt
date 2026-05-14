@@ -248,10 +248,22 @@ class BacktestEngine:
                 try:
                     opt_res = model.fit(window, constraints)
                     opt_results[curr_date] = opt_res
-                    new_w = opt_res.weights.reindex(names).fillna(0.0).values
+                    w = opt_res.weights
+                    if isinstance(w, dict):
+                        w = pd.Series(w)
+                    new_w = w.reindex(names).fillna(0.0).values
                 except Exception as e:  # pragma: no cover
-                    # If model fails, hold the current weights
-                    new_w = weights.loc[curr_date, :].values
+                    import warnings
+                    warnings.warn(
+                        f"Rebal {curr_date} failed for {model.name}: "
+                        f"{type(e).__name__}: {e}",
+                        RuntimeWarning, stacklevel=2,
+                    )
+                    current = weights.loc[curr_date, :].values
+                    if np.any(current > 0):
+                        new_w = current
+                    else:
+                        new_w = np.ones(len(names)) / len(names)
                     opt_results[curr_date] = None
 
                 old_after_drift = weights.loc[curr_date, :].values
