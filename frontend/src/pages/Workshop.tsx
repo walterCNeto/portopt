@@ -102,12 +102,20 @@ export default function Workshop() {
             value={selectedModel}
             onChange={(e) => setSelectedModel(e.target.value)}
             className="w-full rounded border border-slate-300 px-2 py-1.5 text-sm"
+            title="Modelos com configuração avançada (Risk Budget, Black-Litterman) requerem API direta."
           >
-            {models.map((m) => (
-              <option key={m.name} value={m.name}>
-                {m.pedagogy.model_name}
-              </option>
-            ))}
+            {models.map((m) => {
+              const isAdvanced = m.name === "risk_budget" || m.name === "black_litterman";
+              return (
+                <option
+                  key={m.name}
+                  value={m.name}
+                  disabled={isAdvanced}
+                >
+                  {m.pedagogy.model_name}{isAdvanced ? " (avançado — via API)" : ""}
+                </option>
+              );
+            })}
           </select>
         </Field>
 

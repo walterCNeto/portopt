@@ -227,3 +227,111 @@ def test_risk_contribs_sum_to_vol(synthetic_returns):
     rc = risk_contrib(w, cov)
     vol = volatility(w, cov)
     assert abs(rc.sum() - vol) < 1e-10
+
+
+# ============================================================================
+# TrackingError tests (Phase 2)
+# ============================================================================
+
+def test_tracking_error_minimization_stays_near_benchmark():
+    """Pure TE minimization (no return target) should track benchmark."""
+    import numpy as np
+    import pandas as pd
+    from portopt.models.tracking import TrackingError
+    from portopt.models.base import ConstraintSet
+
+    rng = np.random.default_rng(42)
+    T, N = 500, 5
+    R = pd.DataFrame(
+        rng.standard_normal((T, N)) * 0.01,
+        columns=[f"asset_{i}" for i in range(N)],
+    )
+    omega_B = np.array([0.4, 0.3, 0.2, 0.05, 0.05])
+
+    model = TrackingError()
+    cons = ConstraintSet(bounds=(0.0, 1.0), benchmark_weights=omega_B)
+    result = model.fit(R, cons)
+
+    assert result.converged
+    omega = np.array(list(result.weights.values()))
+    assert abs(omega.sum() - 1.0) < 1e-4
+    # Should be very close to benchmark (low TE)
+    assert np.max(np.abs(omega - omega_B)) < 0.10
+    assert result.risk >= 0.0
+
+
+def test_tracking_error_with_target_seeks_excess_return():
+    """With target_te budget, optimizer should deviate from benchmark to gain excess return."""
+    import numpy as np
+    import pandas as pd
+    from portopt.models.tracking import TrackingError
+    from portopt.models.base import ConstraintSet
+
+    rng = np.random.default_rng(7)
+    T, N = 300, 4
+    base = rng.standard_normal((T, N)) * 0.01
+    # Make asset 0 strictly dominant in mean
+    base[:, 0] += 0.005
+    R = pd.DataFrame(base, columns=[f"asset_{i}" for i in range(N)])
+    omega_B = np.array([0.25, 0.25, 0.25, 0.25])
+
+    model = TrackingError(target_te=0.005)
+    cons = ConstraintSet(bounds=(0.0, 1.0), benchmark_weights=omega_B)
+    result = model.fit(R, cons)
+
+    assert result.converged
+    # Should overweight asset 0 (dominant returns)
+    assert result.weights["asset_0"] > 0.25
+
+
+# ============================================================================
+# CDaR tests (Phase 2)
+# ============================================================================
+
+def test_cdar_produces_valid_portfolio():
+    """CDaR LP should solve and produce valid weights."""
+    import numpy as np
+    import pandas as pd
+    from portopt.models.cdar import CDaR
+
+    rng = np.random.default_rng(0)
+    T, N = 250, 5
+    R = pd.DataFrame(
+        rng.standard_normal((T, N)) * 0.01,
+        columns=[f"asset_{i}" for i in range(N)],
+    )
+
+    model = CDaR(alpha=0.05)
+    result = model.fit(R)
+
+    assert result.converged
+    omega = np.array(list(result.weights.values()))
+    assert abs(omega.sum() - 1.0) < 1e-4
+    assert all(w >= -1e-6 for w in omega)
+    assert result.risk_measure == "cdar"
+    assert result.risk >= 0.0
+
+
+def test_cdar_avoids_high_drawdown_asset():
+    """CDaR should underweight assets with severe historical drawdowns."""
+    import numpy as np
+    import pandas as pd
+    from portopt.models.cdar import CDaR
+
+    rng = np.random.default_rng(42)
+    T = 500
+    # asset "stable": low vol, no drawdown
+    stable = rng.standard_normal(T) * 0.005
+    # asset "crashes": severe sustained loss in first half
+    crashes = np.concatenate([
+        np.full(T // 4, -0.02),
+        rng.standard_normal(T - T // 4) * 0.01,
+    ])
+    R = pd.DataFrame({"stable": stable, "crashes": crashes})
+
+    model = CDaR(alpha=0.05)
+    result = model.fit(R)
+
+    assert result.converged
+    # CDaR should heavily favor the stable asset
+    assert result.weights["stable"] > result.weights["crashes"]
