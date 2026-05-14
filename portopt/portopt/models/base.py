@@ -154,7 +154,7 @@ class OptimizationModel(ABC):
 class Backend:
     """Solver backend selector.
 
-    SCIPY = scipy.optimize (educational, mirrors Chagas' notebooks)
+    SCIPY = scipy.optimize (educational, mirrors reference notebooks)
     LINPROG = scipy.optimize.linprog with HiGHS (linearized problems)
     CVXPY = cvxpy (production-grade convex)
     """

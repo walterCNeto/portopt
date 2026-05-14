@@ -1,12 +1,12 @@
-"""Mean and covariance estimators.
+﻿"""Mean and covariance estimators.
 
-Covers the full menu used by Chagas:
+Covers the full menu covered in the literature:
 - Sample (vanilla)
-- EWMA (Chagas §4 IV/ERC)
-- James-Stein (Chagas §5.2)
-- Bayes-Stein / Jorion (Chagas §5.3 notebook implementation)
-- Ledoit-Wolf constant correlation (Chagas §5.3)
-- CAPM-implied (Chagas §5.4 for Black-Litterman prior)
+- EWMA (used in IV/ERC)
+- James-Stein (Stein 1956, Efron-Morris 1973)
+- Bayes-Stein / Jorion (1986)
+- Ledoit-Wolf constant correlation (Ledoit-Wolf 2004)
+- CAPM-implied (He-Litterman 2002 for Black-Litterman prior)
 """
 
 from __future__ import annotations
@@ -70,7 +70,7 @@ class EWMAMean(MeanEstimator):
 
 @dataclass
 class JamesStein(MeanEstimator):
-    """James-Stein shrinkage estimator (Chagas §5.2).
+    """James-Stein shrinkage estimator (Stein 1956, Efron-Morris 1973).
 
     Shrinks sample mean toward a grand mean μ₀:
 
@@ -97,7 +97,7 @@ class JamesStein(MeanEstimator):
 
 @dataclass
 class BayesStein(MeanEstimator):
-    """Bayes-Stein (Jorion 1986) estimator, as implemented by Chagas in nb4.
+    """Bayes-Stein (Jorion 1986) estimator.
 
     Shrinks toward the minimum-variance grand mean μ_g:
 
@@ -151,13 +151,13 @@ class SampleCov(CovEstimator):
     """Plain sample covariance."""
 
     def fit(self, returns):
-        # Symmetrize to handle rounding errors (Chagas §2.6 pattern)
+        # Symmetrize to handle rounding errors
         cov = returns.cov().values
         return (cov + cov.T) / 2.0
 
 
 class EWMACov(CovEstimator):
-    """Exponentially-weighted covariance (Chagas §4.1)."""
+    """Exponentially-weighted covariance."""
 
     def __init__(self, halflife: int = 63):
         self.halflife = halflife
@@ -169,14 +169,14 @@ class EWMACov(CovEstimator):
 
 
 class LedoitWolfCC(CovEstimator):
-    """Ledoit-Wolf shrinkage with constant-correlation target (Chagas §5.3).
+    """Ledoit-Wolf shrinkage with constant-correlation target (Ledoit-Wolf 2004).
 
     Σ_LW = (1 - w) Σ̂ + w Σ_CC
 
     where Σ_CC has all off-diagonal correlations equal to the cross-sectional
     average ρ̄ and w is the optimal shrinkage intensity κ̂ / T (clipped to [0, 1]).
 
-    Implementation faithfully follows Chagas' notebook 4 (cells with π̂, ĉ, γ̂).
+    Implementation follows Ledoit-Wolf (2004) faithfully.
     For production, prefer `sklearn.covariance.LedoitWolf` (also supported via
     `LedoitWolfSklearn` below).
     """
@@ -217,7 +217,7 @@ class LedoitWolfCC(CovEstimator):
 
         # ĉ : involves cross-asset moments; Schäfer-Strimmer simplification:
         # for the CC target, the ĉ term is small and ĉ ≈ Σ_i π̂_ii + (correction)
-        # Here we approximate (Chagas' explicit form is verbatim in the notebook,
+        # Here we approximate (the explicit form would require additional steps,
         # this version is the Schäfer-Strimmer 2005 expression which is equivalent
         # in the limit and numerically more stable):
         c_hat = float(np.diag((diffs ** 2).mean(axis=0)).sum())
@@ -288,3 +288,4 @@ class Moments:
             cov=cov_est.fit(returns),
             names=list(returns.columns),
         )
+

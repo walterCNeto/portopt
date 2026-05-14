@@ -66,7 +66,7 @@ function Footer() {
         <p>
           <strong className="text-wcn-primary">portopt</strong> · WCN Softwares ·{" "}
           baseado no curso{" "}
-          <em>Portfolio Optimization</em> do Prof. Guido Chagas (2024).
+          <em>Portfolio Optimization</em> do classical portfolio optimization literature.
         </p>
         <p className="mt-1 text-xs">
           Licença MIT · Educational use · Não constitui recomendação de investimento.

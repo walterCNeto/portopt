@@ -1,6 +1,6 @@
 """Visualization helpers.
 
-Functions are pure-matplotlib for compatibility with notebooks (Chagas style).
+Functions are pure-matplotlib for compatibility with notebooks (standard notebook style).
 A Plotly variant for the future web UI can be added in `viz_plotly.py`.
 """
 
@@ -113,7 +113,7 @@ def plot_drawdown(log_rets: pd.Series, ax=None):
 
 
 def plot_hrp_dendrogram(linkages: np.ndarray, labels: list[str], ax=None):
-    """HRP dendrogram (Chagas nb3 cell 60)."""
+    """HRP dendrogram (Lopez de Prado style)."""
     import matplotlib.pyplot as plt
     import scipy.cluster.hierarchy as sch
     if ax is None:

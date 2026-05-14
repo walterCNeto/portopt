@@ -73,7 +73,7 @@ def _placeholder_pedagogy(name: str, cls):
         tier="roadmap",
         one_liner="(Pedagogy content pending.)",
         formula_latex="",
-        chagas_section="Not in Chagas (2024)",
+        reference="Reference not available",
         references=[],
         drawbacks=[],
         when_to_use=[],

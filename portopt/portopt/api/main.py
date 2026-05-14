@@ -39,7 +39,7 @@ app = FastAPI(
     version=settings.app_version,
     description=(
         "Portfolio Optimization Toolkit — REST API.\n\n"
-        "Based on Prof. Guido Chagas (2024) course. Educational/academic positioning: "
+        "Educational/academic positioning: "
         "every model carries a `pedagogy` block with formula (LaTeX), references and "
         "drawbacks. Use **POST /compare** to evaluate multiple models on the same data — "
         "the killer feature for learning by comparison.\n\n"
@@ -56,7 +56,7 @@ app = FastAPI(
         {"name": "optimization", "description": "Single-model optimization"},
         {"name": "backtest", "description": "Rolling backtest with transaction costs"},
         {"name": "compare", "description": "Side-by-side multi-model comparison"},
-        {"name": "datasets", "description": "Bundled Chagas (2024) datasets"},
+        {"name": "datasets", "description": "Bundled educational datasets"},
         {"name": "data", "description": "External data fetch (yfinance, BACEN)"},
     ],
 )

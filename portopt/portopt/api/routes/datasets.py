@@ -1,4 +1,4 @@
-"""Dataset endpoints — expose the Chagas (2024) bundled datasets via HTTP."""
+"""Dataset endpoints — expose the bundled educational datasets via HTTP."""
 
 import pandas as pd
 from fastapi import APIRouter, HTTPException, Query

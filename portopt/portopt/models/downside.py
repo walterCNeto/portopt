@@ -1,4 +1,4 @@
-"""Downside Risk optimization (Sortino-Meer 1991, Chagas §3.4).
+"""Downside Risk optimization (Sortino-Meer 1991).
 
 TODO: implement (similar to Markowitz but with downside risk as objective).
 """

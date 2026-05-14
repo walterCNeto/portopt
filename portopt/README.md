@@ -2,17 +2,17 @@
 
 **Portfolio Optimization Toolkit** — WCN Softwares
 
-Software produtivo construído sobre o material didático do **Prof. Guido Chagas** (2024), oferecendo um *menu* unificado de modelos de otimização de portfólios, da MV clássica de Markowitz até técnicas modernas (HRP, CVaR, Black-Litterman).
+Software construído com base na literatura clássica de otimização de portfólios, oferecendo um *menu* unificado de modelos de otimização de portfólios, da MV clássica de Markowitz até técnicas modernas (HRP, CVaR, Black-Litterman).
 
 ## Por que este software existe
 
-Os 4 notebooks do Chagas implementam cada modelo separadamente, com loops de backtest duplicados. O `portopt` factura o que é comum (loading de dados, drift de pesos, custos de transação, métricas) e deixa o usuário escolher *só o modelo*. Mesma rigor matemático, sem ter que copiar-colar 200 linhas de boilerplate por experimento.
+Os notebooks didáticos clássicos implementam cada modelo separadamente, com loops de backtest duplicados. O `portopt` factura o que é comum (loading de dados, drift de pesos, custos de transação, métricas) e deixa o usuário escolher *só o modelo*. Mesma rigor matemático, sem ter que copiar-colar 200 linhas de boilerplate por experimento.
 
 ## Filosofia
 
 - **Modelo plugável, engine único.** Cada modelo é uma classe que implementa `fit(returns) → weights`. O backtest engine consome qualquer modelo da mesma forma.
 - **Look-ahead bias proof por design.** O engine só expõe a janela de treino ao modelo.
-- **Dois modos de solver.** `educational` (scipy SLSQP, reproduz linha-a-linha o Chagas) e `production` (cvxpy ou HiGHS, robusto).
+- **Dois modos de solver.** `educational` (scipy SLSQP, fiel à formulação clássica) e `production` (cvxpy ou HiGHS, robusto).
 - **Custos como componente plugável.** De flat bps (didático) até modelo realista com IR brasileiro.
 - **Backend BR-first.** Universo nativo de B3 + BACEN SGS, com offshore via yfinance.
 
@@ -111,7 +111,7 @@ portopt/
 
 ## Validação contra os notebooks
 
-A pasta `tests/golden/` reproduz os exercícios e exemplos dos notebooks do Chagas. Sempre que possível, os outputs do `portopt` são comparados *bit-a-bit* aos outputs originais — garantia de que a refatoração não introduziu regressões matemáticas.
+A pasta `tests/golden/` reproduz os exercícios clássicos da literatura. Sempre que possível, os outputs do `portopt` são comparados *bit-a-bit* aos outputs originais — garantia de que a refatoração não introduziu regressões matemáticas.
 
 ## Licença
 
@@ -119,4 +119,4 @@ MIT (em discussão; pode evoluir para AGPL ou comercial conforme estratégia de 
 
 ## Reconhecimentos
 
-Toda a estrutura conceitual e os exemplos didáticos são baseados no curso *Portfolio Optimization* do **Prof. Guido Chagas (2024)**. Erros de implementação são exclusivamente do autor.
+Toda a estrutura conceitual e os exemplos didáticos são baseados no curso *Portfolio Optimization* do **classical portfolio optimization literature**. Erros de implementação são exclusivamente do autor.

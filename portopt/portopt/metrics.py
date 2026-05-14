@@ -1,6 +1,6 @@
 """Performance and risk metrics.
 
-The Chagas-mentioned `quantstats` equivalent: Sharpe, Sortino, Calmar, Omega,
+The standard `quantstats` equivalent: Sharpe, Sortino, Calmar, Omega,
 max drawdown, ulcer index, etc. Used for backtest reporting and for the
 comparative analysis (which is the differentiating feature of the product).
 """

@@ -6,9 +6,9 @@ Stack: idêntica ao padrão WCN Softwares (SafraRisk, ChassiRO). Branding em PT-
 
 ## Páginas
 
-1. **`/`** — landing page, apresenta os 3 pilares (Catálogo, Laboratório, Comparativo) e os 3 datasets do Chagas inclusos.
-2. **`/catalog`** — catálogo de 16 modelos, organizados em 5 tiers (Naïve → Robust). Cada card mostra nome, descrição one-liner e seção do Chagas.
-3. **`/models/:name`** — viewer didático com fórmula LaTeX (KaTeX), referência ao slide do Chagas, papers fundadores, drawbacks e quando usar.
+1. **`/`** — landing page, apresenta os 3 pilares (Catálogo, Laboratório, Comparativo) e os 3 datasets educacionais inclusos.
+2. **`/catalog`** — catálogo de 16 modelos, organizados em 5 tiers (Naïve → Robust). Cada card mostra nome, descrição one-liner e referência bibliográfica.
+3. **`/models/:name`** — viewer didático com fórmula LaTeX (KaTeX), referência ao paper original, drawbacks, drawbacks e quando usar.
 4. **`/workshop`** — laboratório single-model: configura modelo + dataset + constraints, executa optimize + backtest, exibe pizza de alocação + wealth path.
 5. **`/compare`** — multi-model side-by-side: até 8 modelos, tabela de resumo, wealth paths sobrepostos, métricas comparadas.
 

@@ -1,4 +1,4 @@
-"""Black-Litterman model (Chagas §5.4 and nb4).
+"""Black-Litterman model (Black-Litterman 1992).
 
 Implements the Bayesian derivation:
     μ_BL = [(τΣ)^-1 + P' Ω^-1 P]^-1 [(τΣ)^-1 Π + P' Ω^-1 Q]

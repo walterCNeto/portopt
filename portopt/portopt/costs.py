@@ -2,7 +2,7 @@
 
 The user asked explicitly for costs as a plugin component. This module
 provides a Protocol + several implementations, from the simple flat-bps
-of Chagas' notebooks up to a realistic Brazilian B3 cost stack.
+of reference notebooks up to a realistic Brazilian B3 cost stack.
 
 All cost models follow the same interface:
 
@@ -11,7 +11,7 @@ All cost models follow the same interface:
 returning a scalar fraction of NAV (e.g. 0.0015 = 15 bps of NAV).
 
 Costs enter the backtest as a deduction to the portfolio log-return at the
-rebalancing date, following Chagas' pattern:
+rebalancing date, following the standard pattern:
 
     port_logrets[t] -= log1p(rebal_costs)
 """
@@ -44,14 +44,14 @@ class CostModel(Protocol):
 
 
 # ---------------------------------------------------------------------------
-# Flat cost (Chagas' baseline)
+# Flat cost (educational baseline)
 # ---------------------------------------------------------------------------
 
 @dataclass
 class FlatCost:
-    """Linear cost: rate × |Δw| (Chagas' standard: 15bps to 2bps).
+    """Linear cost: rate × |Δw| (typical range: 15bps to 2bps).
 
-    Used in all 4 Chagas notebooks with values:
+    Used in all 4 reference notebooks with values:
     - 15 bps (0.0015) for monthly equity rebalancing (nb1)
     - 2 bps (0.0002) for monthly commodity futures (nb3, nb4)
     - 10 bps (0.0010) for weekly BR equities (Ex1.xlsx)

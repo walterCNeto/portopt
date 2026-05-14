@@ -46,7 +46,7 @@ from portopt.backtest import BacktestConfig as _BacktestConfig, BacktestEngine a
 def load_prices_from_spec(spec: S.DataSpec) -> pd.DataFrame:
     """Resolve a DataSpec to a price DataFrame.
 
-    - source="dataset" → use bundled Chagas datasets
+    - source="dataset" → use bundled educational datasets
     - source="yfinance" → fetch from Yahoo
     - source="bacen" → fetch BACEN SGS series
     """

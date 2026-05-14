@@ -1,7 +1,6 @@
 """Pedagogy library — educational metadata for every model.
 
-Each entry references the original Chagas slide deck / notebook and the
-foundational academic paper. The frontend renders this as cards / tooltips
+Each entry references the original academic paper that introduced the model. The frontend renders this as cards / tooltips
 in the "learning mode" sequence.
 """
 
@@ -16,7 +15,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="naive",
         one_liner="Aloca peso igual em cada ativo. Naive mas surpreendentemente robusto.",
         formula_latex=r"\omega_i = \dfrac{1}{N} \quad \forall i",
-        chagas_section="nb1 — usado como baseline de comparação",
+        reference="DeMiguel-Garlappi-Uppal (2009), Naive Diversification",
         references=[
             "DeMiguel, V., Garlappi, L., Uppal, R. (2009). Optimal Versus Naive Diversification. RFS, 22(5).",
         ],
@@ -36,7 +35,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="naive",
         one_liner="1/N na largada, sem rebalanceamentos depois.",
         formula_latex=r"\omega_i^{(0)} = \dfrac{1}{N}, \quad \omega_i^{(t)} \text{ deriva com retornos}",
-        chagas_section="nb1 — baseline passivo",
+        reference="Industry standard (passive 1/N baseline)",
         references=[],
         drawbacks=[
             "Pesos vão derivando ao longo do tempo (drift)",
@@ -53,7 +52,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="naive",
         one_liner="Peso proporcional a 1/σ. Mais peso em ativos menos voláteis.",
         formula_latex=r"\omega_i = \dfrac{1/\sigma_i}{\sum_j 1/\sigma_j}",
-        chagas_section="PDF §4.2, nb3",
+        reference="Asness-Frazzini-Pedersen (2012), Leverage Aversion",
         references=[
             "Asness, C., Frazzini, A., Pedersen, L. (2012). Leverage Aversion and Risk Parity. FAJ.",
         ],
@@ -75,7 +74,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
 \min_\omega & \quad \omega' \Sigma \omega \\
 \text{s.t.} & \quad \omega' \mathbf{1} = 1,\; \omega'\bar R \geq \mu_{tgt}
 \end{aligned}""",
-        chagas_section="PDF §2, nb1",
+        reference="Markowitz (1952), Portfolio Selection",
         references=[
             "Markowitz, H. (1952). Portfolio Selection. Journal of Finance, 7(1).",
             "Kolm, P., Tütüncü, R., Fabozzi, F. (2014). 60 Years of Portfolio Optimization. EJOR.",
@@ -98,7 +97,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="allocation",
         one_liner="O portfólio de menor variância na fronteira eficiente. Independe de μ.",
         formula_latex=r"\omega_{MVP} = \dfrac{\Sigma^{-1} \mathbf{1}}{\mathbf{1}' \Sigma^{-1} \mathbf{1}}",
-        chagas_section="PDF §2.2, nb1",
+        reference="Clarke et al. (2006), Minimum-Variance Portfolios",
         references=[
             "Clarke, R., de Silva, H., Thorley, S. (2006). Minimum-Variance Portfolios in US Equity Market. JPM.",
         ],
@@ -117,7 +116,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="allocation",
         one_liner="Maximiza Sharpe ratio. O portfolio tangente à fronteira eficiente com taxa livre de risco.",
         formula_latex=r"\omega_T = \dfrac{\Sigma^{-1}(\bar R - R_F \mathbf{1})}{\mathbf{1}' \Sigma^{-1}(\bar R - R_F \mathbf{1})}",
-        chagas_section="PDF §2.4 (Tobin Separation), nb1",
+        reference="Tobin (1958), Liquidity Preference",
         references=[
             "Tobin, J. (1958). Liquidity Preference as Behavior Towards Risk. RES, 25.",
             "Sharpe, W. (1966). Mutual Fund Performance. J. Business, 39.",
@@ -137,7 +136,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="allocation",
         one_liner="Maximiza utilidade quadrática U = R - 0.5λσ². Parâmetro λ traduz aversão a risco.",
         formula_latex=r"\max_\omega \quad \bar R'\omega - \dfrac{1}{2}\lambda\, \omega'\Sigma\omega",
-        chagas_section="PDF §2.5, nb1",
+        reference="von Neumann-Morgenstern (1947), Expected Utility",
         references=[
             "von Neumann, J., Morgenstern, O. (1947). Theory of Games and Economic Behavior.",
         ],
@@ -159,7 +158,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
 \min_{\omega, y, z} & \quad \sum_{t=1}^T (y_t + z_t) \\
 \text{s.t.} & \quad y_t - z_t = \sum_i (r_{t,i} - \mu_i)\omega_i,\quad y_t, z_t \geq 0
 \end{aligned}""",
-        chagas_section="PDF §3.2, nb2",
+        reference="Konno-Yamazaki (1991), MAD Portfolio Model",
         references=[
             "Konno, H., Yamazaki, H. (1991). MAD Portfolio Optimization Model. Management Science, 37.",
         ],
@@ -179,7 +178,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="alt_risk",
         one_liner="Minimiza desvio padrão dos excessos sobre um benchmark.",
         formula_latex=r"TE = \sqrt{(\omega_P - \omega_B)' \Sigma (\omega_P - \omega_B)}",
-        chagas_section="PDF §3.3, nb2",
+        reference="Jorion (2003), Tracking-Error Constraints",
         references=[
             "Jorion, P. (2003). Portfolio Optimization with Tracking-Error Constraints. FAJ.",
         ],
@@ -199,7 +198,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="alt_risk",
         one_liner="Penaliza apenas retornos abaixo de um MAR (Minimum Acceptable Return).",
         formula_latex=r"DR = \sqrt{\dfrac{1}{T-1}\sum_{t=1}^T \min(r_{t,P} - \text{MAR}, 0)^2}",
-        chagas_section="PDF §3.4, nb2",
+        reference="Sortino-van der Meer (1991), Downside Risk",
         references=[
             "Sortino, F., van der Meer, R. (1991). Downside Risk. JPM, 17(4).",
             "Harlow, W.V. (1991). Asset Allocation in a Downside-Risk Framework. FAJ.",
@@ -220,7 +219,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="alt_risk",
         one_liner="Minimiza a perda esperada na cauda (média das α% piores realizações).",
         formula_latex=r"""\text{CVaR}_\alpha(\omega) = \min_{z}\left[ z + \dfrac{1}{\alpha} \mathbb{E}[(-R_P - z)^+] \right]""",
-        chagas_section="PDF §3.5, nb2",
+        reference="Rockafellar-Uryasev (2000), CVaR Optimization",
         references=[
             "Rockafellar, R., Uryasev, S. (2000). Optimization of Conditional Value-at-Risk. J. Risk, 2(3).",
             "Acerbi, C., Tasche, D. (2002). Expected Shortfall: A Natural Coherent Alternative to VaR.",
@@ -242,7 +241,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="alt_risk",
         one_liner="CVaR aplicado sobre drawdowns: média dos α% piores drawdowns.",
         formula_latex=r"\text{CDaR}_\alpha(\omega) = \min_z\left[ z + \dfrac{1}{T\alpha} \sum_t (DD_t(\omega) - z)^+ \right]",
-        chagas_section="PDF §3.6 (não implementado nos notebooks)",
+        reference="Chekhlov-Uryasev-Zabarankin (2003), Drawdown Measure",
         references=[
             "Chekhlov, A., Uryasev, S., Zabarankin, M. (2003). Drawdown Measure in Portfolio Optimization.",
         ],
@@ -261,7 +260,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="risk_budget",
         one_liner="Cada ativo contribui exatamente vol_P/N para a vol total. Diversificação em risco, não em alocação.",
         formula_latex=r"""\min_\omega \sum_i \left( \omega_i \dfrac{(\Sigma\omega)_i}{\omega'\Sigma\omega} - \dfrac{1}{N} \right)^2""",
-        chagas_section="PDF §4.4, nb3",
+        reference="Maillard-Roncalli-Teiletche (2010), Risk Parity",
         references=[
             "Maillard, S., Roncalli, T., Teiletche, J. (2010). The Properties of Equally Weighted Risk Contribution Portfolios. JPM.",
             "Qian, E. (2005). Risk Parity Portfolios.",
@@ -283,7 +282,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="risk_budget",
         one_liner="Generaliza ERC: cada grupo de ativos contribui com um budget específico.",
         formula_latex=r"\sum_{i \in G_k} \omega_i \dfrac{(\Sigma\omega)_i}{\omega'\Sigma\omega} = RB_k, \; \forall k",
-        chagas_section="PDF §4.5, nb3",
+        reference="Roncalli (2013), Risk Parity and Budgeting",
         references=[
             "Bruder, B., Roncalli, T. (2012). Managing Risk Exposures using the Risk Budgeting Approach.",
             "Roncalli, T. (2013). Introduction to Risk Parity and Budgeting.",
@@ -309,7 +308,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
 \text{2. } & \text{Quasi-diagonalize } \Sigma \\
 \text{3. } & \text{Bisection com IV em cada cluster}
 \end{aligned}""",
-        chagas_section="PDF §4.6, nb3",
+        reference="Lopez de Prado (2016), Hierarchical Risk Parity",
         references=[
             "López de Prado, M. (2016). Building Diversified Portfolios that Outperform Out-of-Sample. JPM.",
             "Raffinot, T. (2018). Hierarchical Clustering-Based Asset Allocation. JPM.",
@@ -331,7 +330,7 @@ PEDAGOGY: dict[str, PedagogyBlock] = {
         tier="robust",
         one_liner="Combina equilíbrio de mercado (CAPM) com views via Bayes. Aloca de forma mais estável.",
         formula_latex=r"""\mu_{BL} = [(\tau\Sigma)^{-1} + P'\Omega^{-1}P]^{-1}[(\tau\Sigma)^{-1}\Pi + P'\Omega^{-1}Q]""",
-        chagas_section="PDF §5.4, nb4",
+        reference="Black-Litterman (1992), Global Portfolio Optimization",
         references=[
             "Black, F., Litterman, R. (1992). Global Portfolio Optimization. FAJ, 48(5).",
             "He, G., Litterman, R. (2002). The Intuition Behind Black-Litterman Model Portfolios.",

@@ -30,7 +30,7 @@ npm run dev
 3. Faça commits pequenos e descritivos. Em PT-BR ou EN, tanto faz.
 4. Rode testes localmente: `pytest`
 5. Rode o linter: `ruff check portopt`
-6. **Abra o PR** descrevendo: o problema, a solução, e referências (papers) se for matemática.
+6. **Abra o PR** descrevendo: o problema, a solução, e referências bibliográficas (papers) se for matemática.
 
 ## O que vale um PR de alta qualidade
 
@@ -39,11 +39,10 @@ npm run dev
 - Registrar em `MODEL_REGISTRY` com nome canônico + aliases
 - Adicionar `PedagogyBlock` em `portopt/api/pedagogy.py` com:
   - `formula_latex` em forma compilável
-  - Citação do paper original (autor, ano, periódico)
-  - Referência à seção do Chagas PDF se aplicável
+  - Citação do paper original (autor, ano, periódico) no campo `reference`
   - Lista honesta de `drawbacks`
 - Adicionar smoke test em `tests/test_smoke.py`
-- Bonus: golden test contra dataset Chagas em `tests/test_golden_chagas.py`
+- Bonus: golden test em `tests/test_golden_datasets.py`
 
 ### Para novos custos
 - Implementar `CostModel` protocol em `portopt/costs.py`
@@ -93,4 +92,4 @@ Toda contribuição aceita aparece na lista de contributors. Para mudanças sign
 
 ---
 
-WCN Softwares · contato em via Issues do GitHub
+WCN Softwares · contato via Issues do GitHub

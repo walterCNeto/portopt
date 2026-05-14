@@ -1,4 +1,4 @@
-"""Tracking Error optimization (Chagas §3.3).
+"""Tracking Error optimization .
 
 Solves: max  μ' (w - w_B)   (active return)
         s.t. (w - w_B)' Σ (w - w_B) <= TE_target²

@@ -13,7 +13,7 @@ export default function Home() {
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-600">
           Plataforma educacional baseada no curso{" "}
-          <em>Portfolio Optimization</em> do Prof. Guido Chagas (2024). Explore
+          <em>Portfolio Optimization</em> do classical portfolio optimization literature. Explore
           16 modelos — de Markowitz a Hierarchical Risk Parity — com fórmulas
           em LaTeX, referências bibliográficas e comparativos lado a lado.
         </p>
@@ -32,7 +32,7 @@ export default function Home() {
         <Pillar
           icon={<BookOpen size={32} className="text-tier-allocation" />}
           title="Catálogo"
-          description="16 modelos organizados em 5 tiers de complexidade. Cada um com fórmula, referência ao slide do Chagas e papers fundadores."
+          description="16 modelos organizados em 5 tiers de complexidade. Cada um com fórmula, referência ao paper original e drawbacks conhecidos."
           to="/catalog"
         />
         <Pillar
@@ -52,7 +52,7 @@ export default function Home() {
       {/* Datasets bundled */}
       <section className="rounded-lg bg-white p-6 shadow-sm">
         <h2 className="mb-3 font-serif text-2xl font-semibold">
-          Datasets do Chagas inclusos
+          Datasets educacionais inclusos
         </h2>
         <p className="mb-4 text-sm text-slate-600">
           Os três datasets originais do curso são distribuídos com a plataforma e

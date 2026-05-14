@@ -1,4 +1,4 @@
-"""Mean-CVaR optimization (Rockafellar-Uryasev 2000, Chagas §3.5).
+"""Mean-CVaR optimization (Rockafellar-Uryasev 2000).
 
 Decision variables: x = [w_1, ..., w_N, VaR, u_1, ..., u_S]   length N + 1 + S
 
@@ -9,7 +9,7 @@ Linearized as:
          u_s >= 0
          μ' w >= μ_target  (optional)
 
-Solved via scipy.optimize.linprog (HiGHS), as Chagas explicitly recommends in §3.5.
+Solved via scipy.optimize.linprog (HiGHS), as recommended in classical references.
 
 TODO: complete implementation following nb2 cell 83.
 """
@@ -39,7 +39,7 @@ class CVaR(OptimizationModel):
         If positive, simulate this many scenarios using multivariate normal
         with the sample μ, Σ. If 0, use the historical returns directly.
     backend : Backend
-        Only LINPROG supported (per Chagas §3.5 warning about SLSQP).
+        Only LINPROG supported (SLSQP is unreliable for CVaR, per the literature).
     """
 
     name = "cvar"
@@ -55,7 +55,7 @@ class CVaR(OptimizationModel):
         random_state: int | None = 42,
     ):
         if backend == Backend.SCIPY:
-            raise ValueError("CVaR with SLSQP is unreliable per Chagas §3.5. Use LINPROG.")
+            raise ValueError("CVaR with SLSQP is unreliable for this LP formulation. Use LINPROG.")
         self.alpha = alpha
         self.n_scenarios = n_scenarios
         self.backend = backend

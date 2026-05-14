@@ -3,14 +3,14 @@
 Design decisions for the educational positioning:
 
 1. Every model response carries a `pedagogy` field with formula (LaTeX),
-   references (Chagas slide, original papers), and an interpretation hint.
+   bibliographic references for the original paper, and an interpretation hint.
 
 2. Every request validates upfront against the configured limits
    (max_tickers, max_backtest_years, etc.) — fail fast with clear errors.
 
 3. Dates are accepted as ISO strings; serialized back as YYYY-MM-DD.
 
-4. All numeric fields use bounded constraints reflecting Chagas' guardrails
+4. All numeric fields use bounded constraints reflecting sensible guardrails from the literature
    (e.g. alpha in [0.001, 0.5] for CVaR; tau in [0.01, 0.99] for BL).
 """
 
@@ -87,7 +87,7 @@ class CostSpec(BaseSchema):
 
     Examples
     --------
-    {"kind": "flat", "rate_bps": 15}                        # 15 bps flat (Chagas baseline)
+    {"kind": "flat", "rate_bps": 15}                        # 15 bps flat (educational baseline)
     {"kind": "b3_realistic"}                                 # B3 emolumentos + liquidação
     {"kind": "b3_realistic", "futures": true}                # B3 futures
     {"kind": "offshore"}                                     # ~50 bps + FX
@@ -112,7 +112,7 @@ class DataSpec(BaseSchema):
     Options:
     - source="yfinance": fetch from Yahoo (BR via .SA suffix). `tickers` required.
     - source="bacen":    fetch from BACEN SGS (CDI, IPCA, USD_PTAX, ...). `tickers` required.
-    - source="dataset":  use a curated dataset (Chagas 2024 included).
+    - source="dataset":  use a curated dataset (curated bundled datasets).
                          `dataset` required; `tickers` may be empty to take all columns.
     """
     source: DataSource = "yfinance"
@@ -197,8 +197,8 @@ class PedagogyBlock(BaseSchema):
     tier: ModelTier
     one_liner: str
     formula_latex: str
-    chagas_section: str = Field(
-        description="Where this is covered in Chagas (2024) PDF / notebook"
+    reference: str = Field(
+        description="Bibliographic reference for the original paper"
     )
     references: list[str] = Field(default_factory=list)
     drawbacks: list[str] = Field(default_factory=list)

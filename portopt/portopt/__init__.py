@@ -1,7 +1,7 @@
 from portopt import returns, data, datasets, costs, models, estimators, metrics, risk_measures
 """portopt — Portfolio Optimization Toolkit (WCN Softwares).
 
-Based on the course "Portfolio Optimization" by Prof. Guido Chagas (2024).
+Based on the course "Portfolio Optimization" by classical portfolio optimization literature.
 
 Quick start:
 

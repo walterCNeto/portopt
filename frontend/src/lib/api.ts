@@ -31,7 +31,7 @@ export interface PedagogyBlock {
   tier: ModelTier;
   one_liner: string;
   formula_latex: string;
-  chagas_section: string;
+  reference: string;
   references: string[];
   drawbacks: string[];
   when_to_use: string[];

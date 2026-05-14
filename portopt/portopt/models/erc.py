@@ -1,9 +1,9 @@
-"""Equal Risk Contribution / Risk Parity (Maillard-Roncalli-Teiletche 2010, Chagas §4.4).
+"""Equal Risk Contribution / Risk Parity (Maillard-Roncalli-Teiletche 2010).
 
 Seeks weights such that each asset contributes equally to portfolio volatility:
     RC_i = vol_P / N  ∀ i
 
-Formulation (Chagas nb3 cell 17):
+Formulation:
     min Σ_i (w_i * (Σw)_i / vol_target² - 1/N)²
     s.t.  Σ w_i = 1,  w_i >= 0,  w' Σ w = vol_target²
 """
@@ -32,9 +32,9 @@ class EqualRiskContribution(OptimizationModel):
     Parameters
     ----------
     cov_estimator : CovEstimator, optional
-        Default: SampleCov. EWMACov(halflife=63) is the Chagas recommendation.
+        Default: SampleCov. EWMACov(halflife=63) is a common alternative in the literature.
     warm_start : "iv" or "equal"
-        Initial point for SLSQP. Chagas warns that ERC has multiple local
+        Initial point for SLSQP. ERC is known to have multiple local
         minima; warm-starting from IV greatly improves convergence (nb3 §4.5).
     target_vol : float, optional
         If set, vol_P = target_vol (requires cash/leverage). If None, no

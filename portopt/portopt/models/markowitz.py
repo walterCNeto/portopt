@@ -1,4 +1,4 @@
-"""Markowitz mean-variance optimization (Chagas §2).
+"""Markowitz mean-variance optimization .
 
 Implements:
 - Markowitz: full EF, either by target_return (min vol) or target_vol (max return)
@@ -6,7 +6,7 @@ Implements:
 - MaximumSharpe: tangency portfolio (with risk-free asset)
 
 Two backends:
-- scipy: SLSQP (educational, mirrors Chagas' notebooks)
+- scipy: SLSQP (educational, mirrors reference notebooks)
 - cvxpy: production-grade convex QP
 """
 
@@ -34,7 +34,7 @@ from portopt.models.base import (
 class Markowitz(OptimizationModel):
     """Mean-Variance optimization (Markowitz 1952).
 
-    Solves one of three equivalent formulations (Chagas §2.2):
+    Solves one of three equivalent formulations (see Kolm-Tütüncü-Fabozzi 2014, §2):
     1. min vol(w) s.t. R_P(w) >= μ_target          (if target_return is set)
     2. max R_P(w) s.t. vol(w) <= σ_target          (if target_vol is set)
     3. min vol(w)                                   (default: MVP)
@@ -71,7 +71,7 @@ class Markowitz(OptimizationModel):
             return self._fit_cvxpy(moments, returns.columns, constraints)
         return self._fit_scipy(moments, returns.columns, constraints)
 
-    # ---------- SciPy SLSQP (educational, mirrors Chagas) ----------
+    # ---------- SciPy SLSQP (educational, transparent solver) ----------
 
     def _fit_scipy(
         self,
@@ -195,7 +195,7 @@ class MinimumVariance(Markowitz):
 
 
 class MaximumSharpe(Markowitz):
-    """Tangency portfolio: maximizes Sharpe ratio (Chagas §2.4).
+    """Tangency portfolio: maximizes Sharpe ratio (Tobin 1958).
 
     Requires a risk-free rate (passed via `risk_free_rate`).
     Solves: max (μ - R_F)' w / sqrt(w' Σ w)

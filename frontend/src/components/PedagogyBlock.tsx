@@ -19,7 +19,7 @@ export default function PedagogyBlock({ data }: Props) {
       )}
 
       <div className="ref-card">
-        <strong>Onde aparece:</strong> {data.chagas_section}
+        <strong>Onde aparece:</strong> {data.reference}
       </div>
 
       {data.when_to_use.length > 0 && (

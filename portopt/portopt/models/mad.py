@@ -1,10 +1,10 @@
-"""Mean-Absolute Deviation optimization (Konno-Yamazaki 1991, Chagas §3.2).
+"""Mean-Absolute Deviation optimization (Konno-Yamazaki 1991).
 
 Linearizes the MAD problem using auxiliary variables y_t, z_t >= 0 such that
 y_t - z_t = Σ_i (r_{t,i} - μ_i) w_i. Then |·| = y_t + z_t and we minimize sum.
 
 Solved via scipy.optimize.linprog (HiGHS) which is dramatically faster than SLSQP.
-Chagas demonstrates the speedup empirically in nb2.
+The literature demonstrates this speedup empirically.
 """
 
 from __future__ import annotations
@@ -45,7 +45,7 @@ class MAD(OptimizationModel):
     def __init__(self, backend: str = Backend.LINPROG):
         if backend == Backend.SCIPY:
             raise ValueError(
-                "MAD with SLSQP is unreliable per Chagas §3.2 (nb2 cell 32). "
+                "MAD with SLSQP is unreliable for this LP formulation. "
                 "Use Backend.LINPROG."
             )
         self.backend = backend

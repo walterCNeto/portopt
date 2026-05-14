@@ -1,6 +1,6 @@
 # portopt
 
-> Plataforma educacional de otimização de portfólios, baseada no curso *Portfolio Optimization* do **Prof. Guido Chagas (2024)**.
+> Plataforma educacional de otimização de portfólios — implementação dos modelos clássicos da literatura, da MV de Markowitz (1952) ao Hierarchical Risk Parity (Lopez de Prado, 2016).
 
 [![Tests](https://github.com/walterCNeto/portopt/actions/workflows/ci.yml/badge.svg)](https://github.com/walterCNeto/portopt/actions/workflows/ci.yml)
 [![Deploy](https://github.com/walterCNeto/portopt/actions/workflows/deploy-frontend.yml/badge.svg)](https://github.com/walterCNeto/portopt/actions/workflows/deploy-frontend.yml)
@@ -10,29 +10,11 @@
 🌐 **Live:** https://waltercneto.github.io/portopt/
 📚 **API docs:** https://portopt-wcn.fly.dev/docs
 
-`portopt` é uma biblioteca Python + REST API + frontend React que implementa **16 modelos de otimização de portfólios** organizados em 5 tiers de complexidade — do equal-weight ingênuo (1/N) ao Hierarchical Risk Parity de López de Prado, passando por Markowitz, MAD, CVaR, ERC, Risk Budgeting e Black-Litterman.
+`portopt` é uma biblioteca Python + REST API + frontend React que implementa **16 modelos de otimização de portfólios** organizados em 5 tiers de complexidade — do equal-weight ingênuo (1/N) ao Hierarchical Risk Parity, passando por Markowitz, MAD, CVaR, ERC, Risk Budgeting e Black-Litterman.
 
-Cada modelo carrega seu próprio **bloco didático** com fórmula em LaTeX, referência ao slide correspondente do Chagas, papers fundadores, drawbacks conhecidos e quando usar. A interface comparativa permite rodar N modelos no mesmo dataset e analisar lado a lado — exatamente o método didático usado em sala de aula.
+Cada modelo carrega seu próprio **bloco didático** com formulação matemática (LaTeX), referência ao paper original que o introduziu, drawbacks conhecidos e quando aplicá-lo. A interface comparativa permite rodar N modelos no mesmo dataset e analisar lado a lado.
 
-## Sumário
-
-- [Em três tier](#em-três-tier)
-- [Modelos disponíveis](#modelos-disponíveis)
-- [Quick start](#quick-start)
-- [Datasets do Chagas inclusos](#datasets-do-chagas-inclusos)
-- [Arquitetura](#arquitetura)
-- [Como contribuir](#como-contribuir)
-- [Reconhecimentos](#reconhecimentos)
-
-## Em três tier
-
-```
-Tier 0 · Naïve            EW · BH · IV
-Tier 1 · Allocation       Markowitz · MVP · MaxSharpe · Quadratic Utility
-Tier 2 · Risk Measures    MAD · TE · Downside Risk · CVaR · CDaR
-Tier 3 · Risk Budgeting   ERC · Risk Budget (por grupo) · HRP
-Tier 4 · Robust           Black-Litterman (com Bayes-Stein e Ledoit-Wolf)
-```
+## Tiers
 
 ## Modelos disponíveis
 
@@ -62,10 +44,8 @@ pip install -e ".[all]"
 ```python
 import portopt as po
 
-# Use um dos datasets do Chagas (zero config)
 prices = po.datasets.subset("ex1", "br_stocks").loc["2018":]
 
-# Compare 6 modelos no mesmo dataset
 result = po.compare(
     models=["ew", "markowitz", "mad", "erc", "hrp", "cvar"],
     prices=prices,
@@ -108,88 +88,79 @@ npm run dev
 # http://localhost:5173
 ```
 
-## Datasets do Chagas inclusos
+## Datasets bundled
 
-| Nome | Universo | Período | Exercício |
-|---|---|---|---|
-| `ex1` | 24 ações brasileiras + CDI | 2003-12 → 2023-12 | nb1 — MV vs EW backtest |
-| `mdr` | 24 commodity futures | 2012-12 → 2023-12 | nb2 — Mean-Downside-Risk |
-| `mcvar` | 24 commodity futures (mesmo universo) | 2012-12 → 2023-12 | nb2 — Mean-CVaR |
+Três datasets curados para exemplos didáticos e exercícios clássicos:
 
-Os datasets vêm distribuídos com o pacote (versionados em `portopt/data_files/chagas_2024/`) — não é preciso fazer upload nem cadastro.
+| Nome | Universo | Período |
+|---|---|---|
+| `ex1` | 24 ações brasileiras + CDI | 2003-12 → 2023-12 |
+| `mdr` | 24 commodity futures | 2012-12 → 2023-12 |
+| `mcvar` | 24 commodity futures | 2012-12 → 2023-12 |
 
 ```python
 import portopt as po
 prices = po.datasets.load("ex1")
 metals = po.datasets.subset("mdr", "metals")
-po.datasets.info("ex1")  # metadata estruturado
+po.datasets.info("ex1")
 ```
 
 ## Arquitetura
 
-```
 ┌──────────────────────────────────┐
 │  Frontend (React + Vite)         │
-│  Hosted at GitHub Pages           │
-│  → fetch /api → API Fly.io        │
+│  Hosted at GitHub Pages          │
 └────────────────┬─────────────────┘
-                 │
-                 ▼
+▼
 ┌──────────────────────────────────┐
 │  REST API (FastAPI + uvicorn)    │
-│  Hosted at Fly.io (region: gru)   │
-│  /api/optimize, /api/backtest,    │
-│  /api/compare, /api/datasets, ... │
+│  Hosted at Fly.io (region: gru)  │
 └────────────────┬─────────────────┘
-                 │
-                 ▼
+▼
 ┌──────────────────────────────────┐
 │  portopt Python library          │
-│  Models · Cost Models · Backtest │
+│  Models · Costs · Backtest       │
 │  Estimators · Risk Measures      │
-│  Datasets (Chagas 2024)          │
 └──────────────────────────────────┘
-```
 
 ### Princípios de design
 
-1. **Modelo plugável, engine único.** Todo modelo expõe a mesma interface `fit(returns, constraints) → OptimizationResult`. O BacktestEngine consome qualquer modelo da mesma forma.
-
+1. **Modelo plugável, engine único.** Todo modelo expõe a mesma interface `fit(returns, constraints) → OptimizationResult`. O `BacktestEngine` consome qualquer modelo da mesma forma.
 2. **Look-ahead bias proof.** No backtest, o modelo só recebe a janela `[t - training_window : t]`, nunca dados futuros.
+3. **Dois modos de solver.** *Educacional* (scipy SLSQP, fiel à literatura) e *produção* (cvxpy/HiGHS, robusto). Configurável por modelo.
+4. **Custos plugáveis.** Do `FlatCost(15bps)` didático até `B3RealisticCost` (emolumentos + liquidação + corretagem) e `TaxAwareCost` (IR brasileiro).
+5. **Pedagogia first-class.** Cada modelo no `/api/models/{name}` retorna fórmula LaTeX + paper fundador + drawbacks + when_to_use.
 
-3. **Dois modos de solver.** *Educacional* (scipy SLSQP, reproduz linha-a-linha o Chagas) e *produção* (cvxpy/HiGHS, robusto). Configurável por modelo.
+## Referências bibliográficas
 
-4. **Custos como componente plugável.** Do `FlatCost(15bps)` didático até `B3RealisticCost` (emolumentos + liquidação + corretagem) e `TaxAwareCost` (IR brasileiro).
+A implementação se baseia na literatura clássica e contemporânea de otimização de portfólios:
 
-5. **Pedagogia first-class.** Cada modelo no `/api/models/{name}` retorna não só a referência técnica, mas formula LaTeX + paper fundador + drawbacks + when_to_use.
+- Markowitz, H. (1952). Portfolio Selection. *Journal of Finance*, 7(1).
+- Tobin, J. (1958). Liquidity Preference as Behavior Towards Risk. *Review of Economic Studies*, 25.
+- Sharpe, W. (1966). Mutual Fund Performance. *Journal of Business*, 39.
+- Konno, H., Yamazaki, H. (1991). MAD Portfolio Model. *Management Science*, 37.
+- Sortino, F., van der Meer, R. (1991). Downside Risk. *Journal of Portfolio Management*, 17(4).
+- Black, F., Litterman, R. (1992). Global Portfolio Optimization. *Financial Analysts Journal*, 48(5).
+- Rockafellar, R., Uryasev, S. (2000). Optimization of Conditional Value-at-Risk. *Journal of Risk*, 2(3).
+- Chekhlov, A., Uryasev, S., Zabarankin, M. (2003). Drawdown Measure in Portfolio Optimization.
+- Jorion, P. (2003). Portfolio Optimization with Tracking-Error Constraints. *FAJ*.
+- Maillard, S., Roncalli, T., Teiletche, J. (2010). Properties of Equally Weighted Risk Contribution Portfolios. *JPM*.
+- Asness, C., Frazzini, A., Pedersen, L. (2012). Leverage Aversion and Risk Parity. *FAJ*.
+- Roncalli, T. (2013). Introduction to Risk Parity and Budgeting.
+- Lopez de Prado, M. (2016). Building Diversified Portfolios that Outperform Out-of-Sample. *JPM*.
+
+Cada modelo no endpoint `/api/models/{name}` retorna seu próprio bloco de pedagogia com a citação específica do paper original.
 
 ## Como contribuir
 
-Pull requests são muito bem-vindos! Ver [CONTRIBUTING.md](CONTRIBUTING.md).
+Pull requests bem-vindos — ver [CONTRIBUTING.md](CONTRIBUTING.md). Áreas prioritárias:
 
-Áreas onde contribuições têm alto valor:
-
-- **Implementar CDaR completo** (hoje é stub)
-- **Implementar Tracking Error completo** (~1 dia, é MV em espaço relativo)
-- **Modelos Tier 5 (roadmap):** Resampling (Michaud), Robust strict (Goldfarb-Iyengar), Entropy Pooling (Meucci)
-- **Universo BR pré-curado** (Ibovespa, IBrX, SMLL, FIIs)
-- **Loaders adicionais**: brapi.dev, B3 oficial, Refinitiv
-- **Internacionalização do frontend** (PT-BR → EN, ES)
-- **Modo Pyodide** — rodar 100% no browser (sem API)
-
-Antes de mandar PR, rode:
-
-```bash
-cd portopt
-pytest                        # 52 testes, ~30s
-ruff check portopt            # lint
-```
-
-## Reconhecimentos
-
-A estrutura conceitual, exposição matemática e exemplos didáticos deste repositório (incluindo os 3 datasets em `portopt/data_files/chagas_2024/`) são baseados no curso **Portfolio Optimization** do Prof. Guido Chagas (2024). Erros de implementação são exclusivamente dos autores.
-
-Bibliotecas que carregam a base matemática: [numpy](https://numpy.org), [scipy](https://scipy.org), [pandas](https://pandas.pydata.org), [scikit-learn](https://scikit-learn.org), [cvxpy](https://www.cvxpy.org), [FastAPI](https://fastapi.tiangolo.com), [Vite](https://vitejs.dev), [React](https://react.dev), [Tailwind](https://tailwindcss.com), [Recharts](https://recharts.org), [KaTeX](https://katex.org).
+- Implementar CDaR completo (hoje stub)
+- Implementar Tracking Error completo
+- Universo BR pré-curado (Ibovespa, IBrX, SMLL, FIIs)
+- Loaders adicionais (brapi.dev, B3 oficial)
+- Modo Pyodide (rodar 100% no browser)
+- Internacionalização (EN, ES)
 
 ## Licença
 

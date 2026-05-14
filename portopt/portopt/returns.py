@@ -18,7 +18,7 @@ import pandas as pd
 def to_log_returns(prices: pd.DataFrame, dropna: bool = True) -> pd.DataFrame:
     """Convert price series to log returns: r_t = ln(P_t / P_{t-1}).
 
-    Equivalent to `np.log1p(prices.pct_change())` (Chagas' standard pattern).
+    Equivalent to `np.log1p(prices.pct_change())` (standard pattern).
     """
     log_rets = np.log1p(prices.pct_change())
     return log_rets.dropna() if dropna else log_rets
@@ -70,7 +70,7 @@ def resample_log_returns(log_rets: pd.DataFrame, freq: str) -> pd.DataFrame:
 def cumulative_wealth(log_rets: pd.Series | pd.DataFrame, initial: float = 1.0):
     """Build cumulative wealth path from log returns.
 
-    Equivalent to Chagas': `np.exp(logrets.cumsum())`.
+    Equivalent to: `np.exp(logrets.cumsum())`.
     """
     return initial * np.exp(log_rets.cumsum())
 
@@ -106,7 +106,7 @@ def annualize_mean(mean_per_period: float | np.ndarray, freq: str = "D") -> floa
 def annualize_vol(vol_per_period: float | np.ndarray, freq: str = "D") -> float | np.ndarray:
     """Annualize a per-period volatility (sqrt-of-time rule, with caveat).
 
-    WARNING (Chagas §2.4): sqrt-of-time is only exact for i.i.d. normal log returns.
+    WARNING: sqrt-of-time is only exact for i.i.d. normal log returns.
     For autocorrelated returns it underestimates true annual volatility.
     Use only as a first approximation.
     """
@@ -140,7 +140,7 @@ def portfolio_log_returns(
 ) -> pd.Series:
     """Compute portfolio log returns given constant weights.
 
-    For static portfolio. For drifting weights (Chagas' standard backtest),
+    For static portfolio. For drifting weights (standard backtest),
     use the BacktestEngine instead.
     """
     simple = np.expm1(log_rets)

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "portopt"
 version = "0.1.0"
-description = "Portfolio Optimization Toolkit (WCN Softwares) — baseado no curso do Prof. Guido Chagas (2024)"
+description = "Portfolio Optimization Toolkit (WCN Softwares) — baseado na literatura clássica de otimização de portfólios"
 readme = "README.md"
 authors = [{name = "Walter C. Neto", email = "contato@vouchamarosindico.com.br"}]
 license = {text = "MIT"}
@@ -40,7 +40,7 @@ portopt = "portopt.cli:main"
 include = ["portopt*"]
 
 [tool.setuptools.package-data]
-portopt = ["data_files/chagas_2024/*.xlsx", "data_files/chagas_2024/*.xls"]
+portopt = ["data_files/bundled/*.xlsx", "data_files/bundled/*.xls"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

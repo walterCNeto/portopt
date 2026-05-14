@@ -1,4 +1,4 @@
-"""Conditional Drawdown-at-Risk (Chekhlov-Uryasev-Zabarankin 2003, Chagas §3.6).
+"""Conditional Drawdown-at-Risk (Chekhlov-Uryasev-Zabarankin 2003).
 
 TODO: implement linearized formulation.
 """

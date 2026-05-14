@@ -1,6 +1,6 @@
 """Compare multiple optimization models on the same dataset.
 
-This is the differentiating feature of the product: run the entire Chagas menu
+This is the differentiating feature of the product: run the entire model menu
 on the same prices, with the same constraints, and present a unified comparison
 of weights, risks, expected returns and (optionally) full backtests.
 """

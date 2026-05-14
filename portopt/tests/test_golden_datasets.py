@@ -1,4 +1,4 @@
-"""Golden tests against Prof. Guido Chagas' reference datasets.
+"""Golden tests against bundled reference datasets.
 
 These tests load the actual Excel files distributed with the course and
 validate that the portopt outputs are mathematically consistent and
@@ -6,11 +6,11 @@ economically sensible. They serve three purposes:
 
 1. **Regression**: catch numerical regressions when refactoring.
 2. **Validation**: confirm that the implementations of MAD/CVaR/HRP/etc
-   produce outputs in the same ballpark as Chagas' notebooks.
+   produce outputs in the same ballpark as reference notebooks.
 3. **Documentation**: show concrete usage with real datasets.
 
 Run with:
-    pytest tests/test_golden_chagas.py -v
+    pytest tests/test_golden_datasets.py -v
 """
 
 from __future__ import annotations
@@ -120,7 +120,7 @@ def test_ex1_backtest_completes(ex1_logrets):
 
 @pytest.fixture(scope="module")
 def mdr_logrets() -> pd.DataFrame:
-    """5d log-returns of 24 commodity futures (Chagas' nb2 choice)."""
+    """5d log-returns of 24 commodity futures (standard literature choice)."""
     prices = datasets.load("mdr").iloc[::5]
     return po.returns.to_log_returns(prices)
 
@@ -136,7 +136,7 @@ def test_mdr_dr_concentrates_low_risk_commodities(mdr_logrets):
 
 
 def test_mdr_mv_dr_consistency(mdr_logrets):
-    """MV and DR should agree on the top picks for commodities (per Chagas §3.4)."""
+    """MV and DR should agree on the top picks for commodities (per classical theory)."""
     mv = po.models.Markowitz().fit(mdr_logrets, po.ConstraintSet())
     dr = po.models.DownsideRisk().fit(mdr_logrets, po.ConstraintSet())
     mv_top5 = set(mv.weights.sort_values(ascending=False).head(5).index)
@@ -166,19 +166,19 @@ def test_mcvar_linprog_succeeds(mcvar_logrets):
 
 
 def test_mcvar_simulated_scenarios(mcvar_logrets):
-    """CVaR with 10k MVN simulations (Chagas' nb2 cell 82 setup) should match MV roughly."""
+    """CVaR with 10k MVN simulations (standard MVN scenario setup) should match MV roughly."""
     cvar_result = po.models.CVaR(alpha=0.05, n_scenarios=10_000, random_state=42).fit(
         mcvar_logrets, po.ConstraintSet()
     )
     mv_result = po.models.Markowitz().fit(mcvar_logrets, po.ConstraintSet())
 
-    # Per Chagas §3.5: MVN simulations underestimate tail → CVaR weights similar to MV
+    # MVN simulations underestimate tail → CVaR weights similar to MV
     # Quantify: top5 should overlap by at least 4 out of 5
     cvar_top5 = set(cvar_result.weights.sort_values(ascending=False).head(5).index)
     mv_top5 = set(mv_result.weights.sort_values(ascending=False).head(5).index)
     overlap = len(cvar_top5 & mv_top5)
     assert overlap >= 4, (
-        f"Expected CVaR-MVN ≈ MV top picks (Chagas §3.5), overlap={overlap}/5"
+        f"Expected CVaR-MVN ≈ MV top picks , overlap={overlap}/5"
     )
 
 
@@ -193,7 +193,7 @@ def test_mcvar_groups_recognized(mcvar_logrets):
 
 
 # ---------------------------------------------------------------------------
-# Risk Budgeting on commodity groups (Chagas nb3 exercise)
+# Risk Budgeting on commodity groups (literature exercise)
 # ---------------------------------------------------------------------------
 
 def test_risk_budget_per_commodity_group(mdr_logrets):

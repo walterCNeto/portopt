@@ -1,4 +1,4 @@
-"""Curated datasets from Prof. Guido Chagas' course (2024).
+"""Curated educational datasets for portfolio optimization examples.
 
 Three files distributed with the package as reference datasets for testing
 and education. Each dataset corresponds to an exercise in the original
@@ -28,7 +28,7 @@ from portopt.data import ExcelLoader
 
 
 # Package-shipped data directory
-_DATA_DIR = Path(__file__).parent / "data_files" / "chagas_2024"
+_DATA_DIR = Path(__file__).parent / "data_files" / "bundled"
 
 # Dataset metadata
 DATASETS = {

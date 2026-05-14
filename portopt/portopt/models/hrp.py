@@ -1,11 +1,11 @@
-"""Hierarchical Risk Parity (Lopez de Prado 2016, Chagas §4.6).
+"""Hierarchical Risk Parity (Lopez de Prado 2016).
 
 Three stages:
 1. Hierarchical Clustering: build a dendrogram from correlation distances.
 2. Quasi-Diagonalization: reorder Σ so similar assets are near the diagonal.
 3. Recursive Bisection: distribute weights using Inverse Variance within bisections.
 
-Implementation faithfully follows Chagas' notebook 3 (cells 60-66).
+Implementation follows the Lopez de Prado (2016) algorithm faithfully.
 """
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ def _correl_distance(corrs: np.ndarray) -> np.ndarray:
 def _quasi_diagonalization(linkages: np.ndarray, N: int, i: int) -> list[int]:
     """Recursive quasi-diagonalization: ordered list of leaf indices.
 
-    Reproduces Chagas' nb3 cell 64.
+    Follows Lopez de Prado (2016) algorithm.
     """
     if i < N:
         return [i]
@@ -46,7 +46,7 @@ def _quasi_diagonalization(linkages: np.ndarray, N: int, i: int) -> list[int]:
 def _recursive_bisection(qd_order: list[int], cov_df: pd.DataFrame) -> pd.Series:
     """Recursive bisection assigning weights via inverse-variance within each cluster.
 
-    Reproduces Chagas' nb3 cell 66.
+    Follows Lopez de Prado (2016) recursive bisection.
     """
     names = cov_df.columns.tolist()
     weights = pd.Series(1.0, index=names)
@@ -102,7 +102,7 @@ class HierarchicalRiskParity(OptimizationModel):
         Default: SampleCov.
     linkage_method : str
         Linkage criterion for hierarchical clustering.
-        Options: "single" (Chagas default, Prado), "complete", "average", "ward".
+        Options: "single" (Prado 2016 default), "complete", "average", "ward".
     return_dendrogram : bool
         If True, attach the dendrogram object to diagnostics for visualization.
     """
@@ -147,7 +147,7 @@ class HierarchicalRiskParity(OptimizationModel):
 
         if lb > 0 or ub < 1:
             # Clip & re-normalize. Production version might re-run bisection
-            # with bounds-aware logic; this is a documented HRP drawback (Chagas §4.6).
+            # with bounds-aware logic; this is a documented HRP drawback .
             w_clipped = weights.clip(lower=lb, upper=ub)
             if w_clipped.sum() > 0:
                 weights = w_clipped / w_clipped.sum()

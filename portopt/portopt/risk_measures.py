@@ -1,4 +1,4 @@
-"""Risk measures (Chagas §3 + §4).
+"""Risk measures (classical literature, §3-§4 of standard textbooks).
 
 Pure functions — they take weights + data and return scalars.
 Used as objectives during optimization AND for reporting.
@@ -123,7 +123,7 @@ def cvar_rockafellar(
     var_value: float,
     alpha: float = 0.05,
 ) -> float:
-    """Rockafellar-Uryasev CVaR auxiliary function (Chagas §3.5).
+    """Rockafellar-Uryasev CVaR auxiliary function .
 
     F_α(w, z) = z + (1/(Mα)) Σ max(0, -R_P(w, r_m) - z)
 
@@ -143,7 +143,7 @@ def cvar_rockafellar(
 # ---------------------------------------------------------------------------
 
 def drawdown_series(weights: np.ndarray, returns: pd.DataFrame | np.ndarray) -> np.ndarray:
-    """Time series of portfolio drawdowns (uncompounded, Chagas §3.6).
+    """Time series of portfolio drawdowns (uncompounded).
 
     Δ_τ = max_{k≤τ} Σ r_i,s w_i over s∈[1,k] - Σ r_i,s w_i over s∈[1,τ]
     """
@@ -184,7 +184,6 @@ def tracking_error(
 ) -> float:
     """Ex-ante Tracking Error: sqrt((w_P - w_B)' Σ (w_P - w_B)).
 
-    Chagas §3.3.
     """
     diff = np.asarray(weights).flatten() - np.asarray(benchmark_weights).flatten()
     return float(np.sqrt(max(diff @ cov @ diff, 0.0)))
@@ -197,7 +196,6 @@ def tracking_error(
 def marginal_risk_contrib(weights: np.ndarray, cov: np.ndarray) -> np.ndarray:
     """Marginal Risk Contribution: MRC_i = (Σ w)_i / sqrt(w'Σw).
 
-    Chagas §4.3.
     """
     w = np.asarray(weights).flatten()
     vol = volatility(w, cov)

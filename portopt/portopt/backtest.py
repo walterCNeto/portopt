@@ -1,11 +1,11 @@
 """Generic backtest engine.
 
 This is the *core abstraction*. It replicates the loop that appears identically
-in all 4 Chagas notebooks (load → drift weights daily → rebalance monthly →
+in all 4 reference notebooks (load → drift weights daily → rebalance monthly →
 apply transaction costs), but with the optimization step *factored out as a
 plugin*.
 
-Pattern from Chagas nb1 cell 100, nb2 cell 43, nb3 cell 6, nb4 cell 11:
+Standard backtest pattern:
 
     for i in range(T_training+1, T):
         rets = expm1(logrets.loc[curr_date])
@@ -45,7 +45,7 @@ from portopt.models.base import (
 # ---------------------------------------------------------------------------
 
 def monthly_rebal_dates(index: pd.DatetimeIndex) -> list[pd.Timestamp]:
-    """Last business day of each month. Mirrors Chagas' nb1 cell 100:
+    """Last business day of each month. Standard convention:
 
         port_ws.groupby(port_ws.index.to_period('M')).apply(lambda d: d.index.max())
     """
@@ -103,7 +103,7 @@ class BacktestConfig:
         "first_alloc" delays cost-incurring rebal to the first opt date.
     skip_first_rebal_costs : bool
         Whether to skip costs on the very first rebalancing date.
-        Chagas does this implicitly for BH (BH rebalances only once).
+        For BH this is implicit (BH rebalances only once).
     progress : bool
         Show tqdm progress bar.
     """
@@ -271,7 +271,7 @@ class BacktestEngine:
 
             prev_date = curr_date
 
-        # Cumulative wealth (Chagas: np.exp(cumsum))
+        # Cumulative wealth (standard: np.exp(cumsum))
         cum = np.exp(port_logrets.cumsum())
 
         result = BacktestResult(

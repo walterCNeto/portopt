@@ -35,10 +35,10 @@ export default function ModelCard({ model }: Props) {
         <span className="font-mono">{model.name}</span>
         <span>·</span>
         <span>Risco: {model.risk_measure}</span>
-        {model.pedagogy.chagas_section && (
+        {model.pedagogy.reference && (
           <>
             <span>·</span>
-            <span className="italic">{model.pedagogy.chagas_section}</span>
+            <span className="italic">{model.pedagogy.reference}</span>
           </>
         )}
       </div>

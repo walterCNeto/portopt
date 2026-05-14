@@ -4,7 +4,7 @@ Sources supported:
 - yfinance (offshore + BR via .SA suffix)
 - brapi.dev (BR equities/FIIs)
 - BACEN SGS (Brazilian risk-free rates and macro)
-- Excel files (for reproducing Chagas' exercises)
+- Excel files (for reproducing example exercises)
 
 All loaders return aligned, cleaned `pd.DataFrame` of adjusted close prices,
 indexed by `pd.DatetimeIndex` in business day frequency.
@@ -88,11 +88,11 @@ class YFinanceLoader(PriceLoader):
 
 
 # ---------------------------------------------------------------------------
-# Excel loader (for Chagas' exercises and custom uploads)
+# Excel loader (for example exercises and custom uploads)
 # ---------------------------------------------------------------------------
 
 class ExcelLoader(PriceLoader):
-    """Loader for Excel files in Chagas' notebook format.
+    """Loader for Excel files in standard notebook format.
 
     Expected format:
     - First column: date (will be set as index)

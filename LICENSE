@@ -19,13 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-ACKNOWLEDGMENTS:
-
-The conceptual structure, mathematical exposition, and pedagogical examples
-distributed in this repository (including the bundled datasets in
-`portopt/data_files/chagas_2024/`) are based on the course "Portfolio
-Optimization" by Prof. Guido Chagas (2024). All errors in implementation
-are exclusively those of the authors of this repository.

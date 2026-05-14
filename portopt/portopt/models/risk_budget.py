@@ -1,4 +1,4 @@
-"""Risk Budgeting per group (Chagas §4.5, nb3 cells 45-48).
+"""Risk Budgeting per group .
 
 Generalizes ERC: instead of equal risk contribution per asset, target a
 specific risk budget per asset group (e.g. 20% Metals, 30% Energy, ...).
@@ -7,7 +7,7 @@ Two formulations:
 - Approach 1: hard constraint per group, ERC objective within group.
 - Approach 2: soft objective summing squared deviations from group budgets.
 
-Chagas notes both are valid but yield different per-asset distributions.
+Both approaches are valid but yield different per-asset distributions.
 """
 
 from __future__ import annotations
@@ -33,10 +33,10 @@ class RiskBudget(OptimizationModel):
     Parameters
     ----------
     approach : "1" or "2"
-        Formulation selector (Chagas nb3 cells 45 and 48).
+        Formulation selector (two valid approaches from the literature).
     cov_estimator : CovEstimator, optional
     warm_start : "iv" or "equal"
-        Warm start for SLSQP (IV recommended per Chagas §4.4).
+        Warm start for SLSQP (IV recommended as warm-start per the literature).
 
     The actual group targets and group->assets mapping come from the
     `ConstraintSet`:

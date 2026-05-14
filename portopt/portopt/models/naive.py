@@ -59,7 +59,7 @@ class BuyAndHold(OptimizationModel):
 
 
 class InverseVolatility(OptimizationModel):
-    """Inverse Volatility: w_i ∝ 1/σ_i (Chagas §4.2).
+    """Inverse Volatility: w_i ∝ 1/σ_i .
 
     Ignores correlations entirely; allocates more to less volatile assets.
     """
@@ -74,7 +74,7 @@ class InverseVolatility(OptimizationModel):
         Parameters
         ----------
         vol_estimator : "sample" or "ewma"
-            Chagas recommends EWMA in §4.2 (smoothing helps recency).
+            EWMA is recommended in the literature (smoothing helps recency).
         """
         self.vol_estimator = vol_estimator
         self.ewma_halflife = ewma_halflife

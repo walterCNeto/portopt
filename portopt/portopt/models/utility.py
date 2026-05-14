@@ -1,4 +1,4 @@
-"""Quadratic Utility optimization (Chagas §2.5).
+"""Quadratic Utility optimization .
 
 Solves: max  μ'w - 0.5 λ w' Σ w
         s.t. constraints
