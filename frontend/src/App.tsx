@@ -64,12 +64,10 @@ function Footer() {
     <footer className="border-t border-slate-200 bg-white">
       <div className="mx-auto max-w-7xl px-4 py-6 text-sm text-slate-600">
         <p>
-          <strong className="text-wcn-primary">portopt</strong> · WCN Softwares ·{" "}
-          baseado no curso{" "}
-          <em>Portfolio Optimization</em> do classical portfolio optimization literature.
+          <strong className="text-wcn-primary">portopt</strong> · Walter C. Neto · Otimização de Portfólios.
         </p>
         <p className="mt-1 text-xs">
-          Licença MIT · Educational use · Não constitui recomendação de investimento.
+          Licença MIT · Uso educacional · Não constitui recomendação de investimento.
         </p>
       </div>
     </footer>
