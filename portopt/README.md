@@ -120,3 +120,4 @@ MIT (em discussão; pode evoluir para AGPL ou comercial conforme estratégia de 
 ## Reconhecimentos
 
 Toda a estrutura conceitual e os exemplos didáticos são baseados no curso *Portfolio Optimization* do **classical portfolio optimization literature**. Erros de implementação são exclusivamente do autor.
+ 
