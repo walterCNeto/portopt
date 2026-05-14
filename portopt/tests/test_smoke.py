@@ -335,3 +335,33 @@ def test_cdar_avoids_high_drawdown_asset():
     assert result.converged
     # CDaR should heavily favor the stable asset
     assert result.weights["stable"] > result.weights["crashes"]
+
+def test_backtest_engine_handles_dict_weights():
+    """Regression test: backtest engine must accept weights as dict (TE, CDaR)
+    or pd.Series (Markowitz). Bug fixed 2026-05-14: dict.reindex() lanca
+    AttributeError silenciosamente, zerando metricas."""
+    import portopt as po
+    from portopt.models.tracking import TrackingError
+    from portopt.models.cdar import CDaR
+
+    prices = po.datasets.subset("ex1", "br_stocks").iloc[:600]
+    cfg = po.BacktestConfig(rebalance="monthly", training_window=252)
+    engine = po.BacktestEngine(cfg)
+    omega_B = np.ones(prices.shape[1]) / prices.shape[1]
+    constraints_te = po.ConstraintSet(benchmark_weights=omega_B)
+    constraints = po.ConstraintSet()
+
+    for name, model, cons in [
+        ("tracking_error", TrackingError(), constraints_te),
+        ("cdar", CDaR(alpha=0.05), constraints),
+    ]:
+        bt = engine.run(prices, model, cons)
+        # If bug regresses, total_return == 0.0 exactly and wealth stays at 1.0
+        total_return = bt.metrics["total_return"] if isinstance(bt.metrics, dict) else bt.metrics.total_return
+        final_wealth = float(bt.cumulative_wealth.iloc[-1])
+        assert total_return != 0.0, (
+            f"Model {name}: total_return is zero - dict.reindex() bug regressed!"
+        )
+        assert abs(final_wealth - 1.0) > 1e-6, (
+            f"Model {name}: cumulative_wealth flat at 1.0 - bug regressed!"
+        )
