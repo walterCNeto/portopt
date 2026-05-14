@@ -35,6 +35,8 @@ def compare(req: S.CompareRequest):
         )
     try:
         return services.run_compare(req)
+    except NotImplementedError as e:
+        raise HTTPException(501, f"Model not yet implemented: {e}")
     except ValueError as e:
         raise HTTPException(400, str(e))
     except FileNotFoundError as e:

@@ -19,6 +19,8 @@ def backtest(req: S.BacktestRequest):
     """
     try:
         return services.run_backtest(req)
+    except NotImplementedError as e:
+        raise HTTPException(501, f"Model not yet implemented: {e}")
     except ValueError as e:
         raise HTTPException(400, str(e))
     except FileNotFoundError as e:
