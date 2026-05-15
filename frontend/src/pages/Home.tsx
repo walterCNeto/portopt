@@ -12,10 +12,9 @@ export default function Home() {
           <span className="text-wcn-primary">do mais simples ao mais complexo.</span>
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-600">
-          Plataforma educacional baseada no curso{" "}
-          <em>Portfolio Optimization</em> do classical portfolio optimization literature. Explore
-          16 modelos — de Markowitz a Hierarchical Risk Parity — com fórmulas
-          em LaTeX, referências bibliográficas e comparativos lado a lado.
+          Plataforma educacional de otimização de portfólios. Explore
+          13 modelos da literatura clássica — de Markowitz a Hierarchical Risk Parity —
+          com fórmulas em LaTeX, referências bibliográficas e comparativos lado a lado.
         </p>
         <div className="mt-8 flex justify-center gap-3">
           <Link to="/catalog" className="btn btn-primary">
